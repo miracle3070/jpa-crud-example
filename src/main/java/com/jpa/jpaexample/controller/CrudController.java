@@ -1,5 +1,6 @@
 package com.jpa.jpaexample.controller;
 
+import com.jpa.jpaexample.entity.CrudEntity;
 import com.jpa.jpaexample.repository.CrudEntityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -38,4 +39,16 @@ public class CrudController {
     public String searchAllMember() {
         return crudEntityRepository.findAll().toString();
     }
+
+    @GetMapping("/insert")
+    public String insertMember(@RequestParam(value = "name") String name, @RequestParam(value = "age") int age) {
+        if(crudEntityRepository.findById(name).isPresent()) {
+            return "동일한 이름이 이미 있습니다.";
+        } else {
+            CrudEntity entity = CrudEntity.builder().name(name).age(age).build();
+            crudEntityRepository.save(entity);
+            return "이름: " + name + " 나이: " + age + "으로 추가되었습니다.";
+        }
+    }
+
 }
