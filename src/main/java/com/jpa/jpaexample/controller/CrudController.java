@@ -51,4 +51,14 @@ public class CrudController {
         }
     }
 
+    @GetMapping("/update")
+    public String updateMember(@RequestParam(value = "name") String name, @RequestParam(value = "age") int age) {
+        if(crudEntityRepository.findById(name).isEmpty()) { // 값 존재여부 확인
+            return "입력한 " + name + "이 존재하지 않습니다.";
+        } else {
+            crudEntityRepository.save(CrudEntity.builder().name(name).age(age).build());
+            return name + "의 나이를 " + age + "로 변경 완료";
+        }
+    }
+
 }
